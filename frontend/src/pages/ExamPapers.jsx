@@ -126,7 +126,7 @@ export default function ExamPapers() {
 
         <div className="space-y-6">
           {groups.map((g) => {
-            const locked = examId === "neet" && g.year <= 2023;
+            const locked = g.year <= 2023;
             return (
             <section key={g.year} data-testid={`year-group-${g.year}`}>
               <h2 className="mb-2.5 text-sm font-extrabold text-slate-500">{g.year}</h2>
