@@ -254,7 +254,17 @@ export default function QuestionPatterns() {
         ? `${countFrac}×${activeMeta?.each}=${activeMeta?.total}`
         : (activeMeta?.equation?.replace(/\s+/g, "") || `${activeMeta?.total}m`);
 
-  const groups = rangeGroups || mathGroups || (explicitList ? [] : bpGroups);
+  // Each explicit item becomes selectable group(s): an OR item yields one group
+  // per option so BOTH chapters can be tapped separately (keyed by q + option idx).
+  const explicitGroups = explicitList
+    ? explicitList.flatMap((c) =>
+        c.options
+          ? c.options.map((o, oi) => ({ key: `${c.q}-${oi}`, label: o, match: (q) => q.chapter === o }))
+          : [{ key: `${c.q}`, label: c.label, match: (q) => q.chapter === c.label }]
+      )
+    : null;
+
+  const groups = rangeGroups || mathGroups || explicitGroups || bpGroups;
 
   const activeGroup = groups.find((g) => g.key === selectedKey);
   const filtered = activeGroup ? questions.filter(activeGroup.match) : [];
@@ -388,26 +398,47 @@ export default function QuestionPatterns() {
                   <div
                     key={c.q}
                     data-testid={`explicit-q${c.q}`}
-                    className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-4 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
+                    className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-4 shadow-sm"
                   >
                     <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-slate-900 text-[11px] font-bold text-white">{c.q}</span>
                     <div className="flex flex-1 flex-col items-center gap-1.5">
-                      <span className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-center text-sm font-extrabold text-slate-900">{c.options[0]}</span>
-                      <span className="text-[11px] font-bold uppercase tracking-widest text-slate-400">OR</span>
-                      <span className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-center text-sm font-extrabold text-slate-900">{c.options[1]}</span>
+                      {c.options.map((o, oi) => {
+                        const oKey = `${c.q}-${oi}`;
+                        const oActive = selectedKey === oKey;
+                        return (
+                          <React.Fragment key={oi}>
+                            {oi > 0 && <span className="text-[11px] font-bold uppercase tracking-widest text-slate-400">OR</span>}
+                            <button
+                              type="button"
+                              data-testid={`explicit-opt-${c.q}-${oi}`}
+                              onClick={() => setSelectedKey(oActive ? null : oKey)}
+                              className={`w-full rounded-lg border px-3 py-2 text-center text-sm font-extrabold transition-all hover:-translate-y-0.5 hover:shadow-sm ${oActive ? "border-blue-500 bg-blue-50 text-blue-700" : "border-slate-200 bg-slate-50 text-slate-900"}`}
+                            >
+                              {o}
+                            </button>
+                          </React.Fragment>
+                        );
+                      })}
                     </div>
                     {c.note && <span className={`ml-1 shrink-0 rounded-lg px-3 py-1.5 text-sm font-bold text-white ${accent.icon}`}>{c.note}</span>}
                   </div>
                 ) : (
-                  <div
-                    key={c.q}
-                    data-testid={`explicit-q${c.q}`}
-                    className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
-                  >
-                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-slate-900 text-[11px] font-bold text-white">{c.q}</span>
-                    <span className="text-sm font-extrabold text-slate-900">{c.label}</span>
-                    {c.note && <span className="rounded-md border border-blue-200 bg-blue-50 px-2 py-0.5 text-[10px] font-semibold text-blue-700">{c.note}</span>}
-                  </div>
+                  (() => {
+                    const rActive = selectedKey === `${c.q}`;
+                    return (
+                      <button
+                        key={c.q}
+                        type="button"
+                        data-testid={`explicit-q${c.q}`}
+                        onClick={() => setSelectedKey(rActive ? null : `${c.q}`)}
+                        className={`flex w-full items-center gap-3 rounded-xl border px-4 py-3 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md ${rActive ? "border-blue-500 bg-blue-50" : "border-slate-200 bg-white"}`}
+                      >
+                        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-slate-900 text-[11px] font-bold text-white">{c.q}</span>
+                        <span className={`text-sm font-extrabold ${rActive ? "text-blue-700" : "text-slate-900"}`}>{c.label}</span>
+                        {c.note && <span className="rounded-md border border-blue-200 bg-blue-50 px-2 py-0.5 text-[10px] font-semibold text-blue-700">{c.note}</span>}
+                      </button>
+                    );
+                  })()
                 )
               ))}
             </div>
