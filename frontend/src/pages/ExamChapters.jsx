@@ -9,6 +9,9 @@ const CLASSES = [
   { key: "12", label: "Class 12", sub: "2nd PUC" },
 ];
 
+// Chapters that stay unlocked in addition to the first two of each list.
+const EXTRA_FREE = new Set(["Motion in a Straight Line", "Matrices"]);
+
 export default function ExamChapters() {
   const { examId, subjectId, cls } = useParams();
   const navigate = useNavigate();
@@ -30,7 +33,7 @@ export default function ExamChapters() {
           </div>
           <div className="space-y-2.5">
             {chapters.map((name, i) => {
-              const locked = i >= 2;
+              const locked = i >= 2 && !EXTRA_FREE.has(name);
               return (
                 <div
                   key={`${cls}-${i}`}

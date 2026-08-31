@@ -11,7 +11,7 @@ export const SUBJECT_META = {
 export const EXAM_CHAPTERS = {
   physics: {
     "11": [
-      "Physical World", "Units and Measurements", "Motion in a Straight Line", "Motion in a Plane",
+      "Units and Measurements", "Motion in a Straight Line", "Motion in a Plane",
       "Laws of Motion", "Work, Energy and Power", "System of Particles and Rotational Motion",
       "Gravitation", "Mechanical Properties of Solids", "Mechanical Properties of Fluids",
       "Thermal Properties of Matter", "Thermodynamics", "Kinetic Theory", "Oscillations", "Waves",
