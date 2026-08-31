@@ -243,9 +243,12 @@ export default function QuestionPatterns() {
     || (subjectId === "chemistry" && CHEMISTRY_CHAPTERS[activePattern])
     || (isMath6p4 && MATH_CHAPTERS["6p4m"])
     || null;
+  const countFrac = activeMeta?.count ? activeMeta.count.replace(/\s*of\s*/i, "/") : null;
   const explicitEquation = isMath6p4
     ? "6+4=10m"
-    : (activeMeta?.equation?.replace(/\s+/g, "") || `${activeMeta?.total}m`);
+    : (isPhysics && countFrac
+        ? `${countFrac}×${activeMeta.each}=${activeMeta.total}`
+        : (activeMeta?.equation?.replace(/\s+/g, "") || `${activeMeta?.total}m`));
 
   const groups = rangeGroups || mathGroups || (explicitList ? [] : bpGroups);
 
