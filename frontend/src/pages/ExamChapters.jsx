@@ -67,7 +67,7 @@ export default function ExamChapters() {
               </span>
               <div>
                 <p className="text-base font-extrabold tracking-tight text-slate-900">{c.label}</p>
-                <p className="text-sm text-slate-500">{c.sub} · {count} chapters</p>
+                <p className="text-sm text-slate-500">{count} chapters</p>
               </div>
               <ChevronRight className="ml-auto h-5 w-5 text-slate-400 transition-transform group-hover:translate-x-1 group-hover:text-slate-900" />
             </button>
