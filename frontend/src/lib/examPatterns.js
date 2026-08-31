@@ -10,10 +10,10 @@ export const PHYSICS_CHAPTERS = {
 
 export const CHEMISTRY_CHAPTERS = {
   "2m": ["Chemical Kinetics", "d & f Block Elements", "Haloalkanes & Haloarenes", "Alcohols, Phenols & Ethers", "Biomolecules"],
-  "3m-inorg": ["d & f Block Elements", "Coordination Compounds"],
-  "3m-phys": ["Solutions", "Electrochemistry", "Chemical Kinetics"],
-  "5m-org": ["Haloalkanes & Haloarenes", "Alcohols, Phenols & Ethers", "Aldehydes, Ketones & Carboxylic Acids", "Amines", "Biomolecules"],
-  "numeric": ["Solutions", "Electrochemistry", "Chemical Kinetics"],
+  "3m-inorg": ["d & f Block Elements", "d & f Block Elements", "Coordination Compounds", "Coordination Compounds", "Coordination Compounds"],
+  "3m-phys": ["Solutions", "Electrochemistry", "Electrochemistry", "Chemical Kinetics"],
+  "5m-org": ["Haloalkanes & Haloarenes", "Alcohols, Phenols & Ethers", "Aldehydes, Ketones & Carboxylic Acids", "Aldehydes, Ketones & Carboxylic Acids", "Amines", "Biomolecules"],
+  "numeric": ["Solutions", "Solutions", "Electrochemistry", "Electrochemistry", "Chemical Kinetics", "Chemical Kinetics"],
 };
 
 export const MATH_CHAPTERS = {
@@ -39,16 +39,23 @@ function nameMatches(a, b) {
   return na === nb || na.includes(nb) || nb.includes(na);
 }
 
-// Returns [{ type, mark? }] — the distinct question types a chapter appears in.
+// Returns [{ type, count, mark? }] — the distinct question types a chapter appears
+// in, with how many questions of that type carry the chapter.
 export function chapterSections(subjectId, chapterName) {
   const lists = MAPS[subjectId];
   if (!lists || !chapterName) return [];
   const out = [];
   for (const [type, items] of Object.entries(lists)) {
-    const found = items.find((it) =>
-      typeof it === "string" ? nameMatches(it, chapterName) : nameMatches(it.name, chapterName)
-    );
-    if (found) out.push({ type, mark: typeof found === "object" ? found.mark : undefined });
+    let count = 0;
+    let mark;
+    for (const it of items) {
+      const name = typeof it === "string" ? it : it.name;
+      if (nameMatches(name, chapterName)) {
+        count += 1;
+        if (typeof it === "object") mark = it.mark;
+      }
+    }
+    if (count > 0) out.push({ type, count, mark });
   }
   return out;
 }

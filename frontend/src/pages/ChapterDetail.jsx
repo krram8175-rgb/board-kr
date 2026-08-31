@@ -33,7 +33,8 @@ export default function ChapterDetail() {
   const parts = [];
   // 1-mark (MCQ & FBK / Part A) comes from the blueprint weightage.
   if (row && row.vals?.A) {
-    parts.push({ key: "A", mark: "1", name: "MCQ & FBK", full: "1 Mark Questions", count: row.vals.A });
+    const n = row.vals.A;
+    parts.push({ key: "A", mark: "1", name: "1M · MCQ & FBK", count: n, total: n });
   }
   sections.forEach((s) => {
     const meta = patternMeta.find((p) => p.type === s.type);
@@ -43,8 +44,8 @@ export default function ChapterDetail() {
       key: s.type,
       mark: String(mark),
       name: `${mark}M · ${meta.full || meta.label}`,
-      full: meta.label,
-      count: 1,
+      count: s.count,
+      total: mark * s.count,
     });
   });
 
@@ -82,10 +83,10 @@ export default function ChapterDetail() {
                     </span>
                     <div>
                       <p className="text-sm font-extrabold text-slate-900">{p.name}</p>
-                      {p.count > 1 && <p className="text-xs text-slate-500">{p.count} questions</p>}
+                      {p.count > 1 && <p className="text-xs text-slate-500">{p.mark} × {p.count} = {p.total}</p>}
                     </div>
                     <span className={`ml-auto rounded-lg px-3 py-1.5 text-sm font-bold text-white ${accent.icon}`}>
-                      {p.mark}m
+                      {p.total} marks
                     </span>
                   </div>
                 );
