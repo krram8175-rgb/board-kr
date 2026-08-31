@@ -243,12 +243,16 @@ export default function QuestionPatterns() {
     || (subjectId === "chemistry" && CHEMISTRY_CHAPTERS[activePattern])
     || (isMath6p4 && MATH_CHAPTERS["6p4m"])
     || null;
-  const countFrac = activeMeta?.count ? activeMeta.count.replace(/\s*of\s*/i, "/") : null;
-  const explicitEquation = isMath6p4
+  const countFrac = activeMeta?.count && /\bof\b/i.test(activeMeta.count)
+    ? activeMeta.count.replace(/\s*of\s*/i, "/")
+    : null;
+  const markEquation = isMath6p4
     ? "6+4=10m"
-    : (isPhysics && countFrac
-        ? `${countFrac}×${activeMeta.each}=${activeMeta.total}`
-        : (activeMeta?.equation?.replace(/\s+/g, "") || `${activeMeta?.total}m`));
+    : isMcqFbk
+      ? (activeMeta?.equation?.replace(/\s+/g, "") || `${activeMeta?.num}×${activeMeta?.each}=${activeMeta?.total}`)
+      : countFrac
+        ? `${countFrac}×${activeMeta?.each}=${activeMeta?.total}`
+        : (activeMeta?.equation?.replace(/\s+/g, "") || `${activeMeta?.total}m`);
 
   const groups = rangeGroups || mathGroups || (explicitList ? [] : bpGroups);
 
@@ -366,12 +370,12 @@ export default function QuestionPatterns() {
             className="absolute right-4 top-1/2 text-base font-extrabold tracking-wide text-slate-900"
             style={{ writingMode: "vertical-rl", transform: "translateY(-50%) rotate(180deg)" }}
           >
-            {(isMcqFbk ? activeMeta?.equation?.replace(/\s+/g, "") : bpEquation) || activeMeta?.equation || `${activeMeta?.num}x${activeMeta?.each}=${activeMeta?.total}M`}
+            {markEquation}
           </span>
         </div>
         )}
 
-        {/* Explicit "question number + chapter" list (Physics 2M/3M/5M/VI, Maths 6+4M) */}
+        {/* Explicit "question number + chapter" list (Physics 2M/3M/5M/VI, Chemistry, Maths 6+4M) */}
         {explicitList && (
         <div className="relative mt-4">
           <div className="absolute -left-4 top-0 h-0.5 w-4 rounded-full bg-slate-400" />
@@ -414,7 +418,7 @@ export default function QuestionPatterns() {
             className="absolute right-4 top-1/2 text-base font-extrabold tracking-wide text-slate-900"
             style={{ writingMode: "vertical-rl", transform: "translateY(-50%) rotate(180deg)" }}
           >
-            {explicitEquation}
+            {markEquation}
           </span>
         </div>
         )}
