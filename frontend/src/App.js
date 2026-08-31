@@ -24,6 +24,7 @@ function App() {
             <Route path="/board" element={<SubjectBoard />} />
             <Route path="/exam/:examId" element={<ExamDashboard />} />
             <Route path="/exam/:examId/:subjectId/chapters" element={<ExamChapters />} />
+            <Route path="/exam/:examId/:subjectId/chapters/:cls" element={<ExamChapters />} />
             <Route path="/subject/:subjectId" element={<SubjectDashboard />} />
             <Route path="/subject/:subjectId/patterns" element={<QuestionPatterns />} />
             <Route path="/subject/:subjectId/blueprint" element={<Blueprint />} />

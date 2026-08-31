@@ -11,6 +11,7 @@ export const Header = ({ showBack = false, title, Icon, bgClass = "bg-blue-600" 
     const parts = (location.pathname || "").split("/").filter(Boolean);
     // /exam/:id[/:subject/chapters] -> back to exam dashboard, or home
     if (parts[0] === "exam") {
+      if (parts.length >= 5) { navigate("/" + parts.slice(0, parts.length - 1).join("/")); return; }
       if (parts.length >= 3) { navigate(`/exam/${parts[1]}`); return; }
       navigate("/"); return;
     }
