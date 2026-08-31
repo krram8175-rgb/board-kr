@@ -2,7 +2,7 @@ import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { EXAM_CHAPTERS, SUBJECT_META } from "@/lib/examChapters";
-import { Atom, ChevronRight, GraduationCap } from "lucide-react";
+import { Atom, ChevronRight, GraduationCap, Lock } from "lucide-react";
 
 const CLASSES = [
   { key: "11", label: "Class 11", sub: "1st PUC" },
@@ -30,18 +30,29 @@ export default function ExamChapters() {
             <span className="ml-auto text-xs font-medium text-slate-400">{chapters.length} chapters</span>
           </div>
           <div className="space-y-2.5">
-            {chapters.map((name, i) => (
-              <div
-                key={`${cls}-${i}`}
-                data-testid={`chapter-${cls}-${i + 1}`}
-                className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
-              >
-                <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-sm font-extrabold text-white ${meta.bg}`}>
-                  {i + 1}
-                </span>
-                <span className="text-sm font-semibold text-slate-900">{name}</span>
-              </div>
-            ))}
+            {chapters.map((name, i) => {
+              const locked = i >= 2;
+              return (
+                <div
+                  key={`${cls}-${i}`}
+                  data-testid={`chapter-${cls}-${i + 1}`}
+                  data-locked={locked ? "true" : "false"}
+                  className={`flex items-center gap-3 rounded-xl border px-4 py-3 shadow-sm transition-all ${
+                    locked ? "border-slate-200 bg-slate-50" : "border-slate-200 bg-white hover:-translate-y-0.5 hover:shadow-md"
+                  }`}
+                >
+                  <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-sm font-extrabold text-white ${locked ? "bg-slate-300" : meta.bg}`}>
+                    {i + 1}
+                  </span>
+                  <span className={`text-sm font-semibold ${locked ? "text-slate-400" : "text-slate-900"}`}>{name}</span>
+                  {locked && (
+                    <span className="ml-auto flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-rose-50 text-rose-500 ring-1 ring-rose-100">
+                      <Lock className="h-4 w-4" />
+                    </span>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </main>
       </div>
