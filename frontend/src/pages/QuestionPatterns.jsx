@@ -126,6 +126,46 @@ const PHYSICS_CHAPTERS = {
   ],
 };
 
+// Chemistry — explicit chapter list with question numbers per Part (from official MQP order)
+const CHEMISTRY_CHAPTERS = {
+  "2m": [
+    { q: 21, label: "Chemical Kinetics" },
+    { q: 22, label: "d & f Block Elements" },
+    { q: 23, label: "Haloalkanes & Haloarenes" },
+    { q: 24, label: "Alcohols, Phenols & Ethers" },
+    { q: 25, label: "Biomolecules" },
+  ],
+  "3m-inorg": [
+    { q: 26, label: "d & f Block Elements" },
+    { q: 27, label: "d & f Block Elements" },
+    { q: 28, label: "Coordination Compounds" },
+    { q: 29, label: "Coordination Compounds" },
+    { q: 30, label: "Coordination Compounds" },
+  ],
+  "3m-phys": [
+    { q: 31, label: "Solutions" },
+    { q: 32, label: "Electrochemistry" },
+    { q: 33, label: "Electrochemistry" },
+    { q: 34, label: "Chemical Kinetics" },
+  ],
+  "5m-org": [
+    { q: 35, label: "Haloalkanes & Haloarenes" },
+    { q: 36, label: "Alcohols, Phenols & Ethers" },
+    { q: 37, label: "Aldehydes, Ketones & Carboxylic Acids" },
+    { q: 38, label: "Aldehydes, Ketones & Carboxylic Acids" },
+    { q: 39, label: "Amines" },
+    { q: 40, label: "Biomolecules" },
+  ],
+  "numeric": [
+    { q: 41, label: "Solutions" },
+    { q: 42, label: "Solutions" },
+    { q: 43, label: "Electrochemistry" },
+    { q: 44, label: "Electrochemistry" },
+    { q: 45, label: "Chemical Kinetics" },
+    { q: 46, label: "Chemical Kinetics" },
+  ],
+};
+
 export default function QuestionPatterns() {
   const { subjectId } = useParams();
   const navigate = useNavigate();
@@ -200,6 +240,7 @@ export default function QuestionPatterns() {
   // Explicit "question number + chapter" list (Physics 2M/3M/5M/VI, Maths 6+4M).
   // Items may be single {q,label} or an OR choice {q,options:[a,b]}.
   const explicitList = (isPhysics && PHYSICS_CHAPTERS[activePattern])
+    || (subjectId === "chemistry" && CHEMISTRY_CHAPTERS[activePattern])
     || (isMath6p4 && MATH_CHAPTERS["6p4m"])
     || null;
   const explicitEquation = isMath6p4
