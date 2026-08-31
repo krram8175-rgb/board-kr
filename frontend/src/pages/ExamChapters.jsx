@@ -5,8 +5,8 @@ import { EXAM_CHAPTERS, SUBJECT_META } from "@/lib/examChapters";
 import { Atom, ChevronRight, GraduationCap } from "lucide-react";
 
 const CLASSES = [
-  { key: "11", label: "1st PUC", sub: "Class 11" },
-  { key: "12", label: "2nd PUC", sub: "Class 12" },
+  { key: "11", label: "Class 11", sub: "1st PUC" },
+  { key: "12", label: "Class 12", sub: "2nd PUC" },
 ];
 
 export default function ExamChapters() {
@@ -22,7 +22,7 @@ export default function ExamChapters() {
     const chapters = data[cls] || [];
     return (
       <div className="min-h-screen bg-[#F8FAFC]">
-        <Header showBack title={`${meta.name} · ${clsMeta.sub}`} Icon={Icon} bgClass={meta.bg} />
+        <Header showBack title={`${meta.name} · ${clsMeta.label}`} Icon={Icon} bgClass={meta.bg} />
         <main className="mx-auto max-w-2xl px-4 py-8 md:px-6">
           <div className="mb-4 flex items-center gap-2">
             <span className={`rounded-lg px-2.5 py-1 text-xs font-extrabold text-white ${meta.bg}`}>{clsMeta.label}</span>
