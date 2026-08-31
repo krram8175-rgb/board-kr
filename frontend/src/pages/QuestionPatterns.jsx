@@ -89,6 +89,43 @@ const MATH_CHAPTERS = {
   ],
 };
 
+// Physics — explicit chapter list with question numbers per Part (from official MQP order)
+const PHYSICS_CHAPTERS = {
+  "2m": [
+    { q: 21, label: "Electric Charges & Fields" },
+    { q: 22, label: "Electrostatic Potential & Capacitance" },
+    { q: 23, label: "Current Electricity" },
+    { q: 24, label: "Moving Charges & Magnetism" },
+    { q: 25, label: "Electromagnetic Induction" },
+    { q: 26, label: "Electromagnetic Waves" },
+    { q: 27, label: "Atoms" },
+    { q: 28, label: "Semiconductor Electronics" },
+  ],
+  "3m": [
+    { q: 29, label: "Electric Charges & Fields" },
+    { q: 30, label: "Electrostatic Potential & Capacitance" },
+    { q: 31, label: "Moving Charges & Magnetism" },
+    { q: 32, label: "Magnetism & Matter" },
+    { q: 33, label: "Electromagnetic Induction" },
+    { q: 34, label: "Dual Nature of Radiation & Matter" },
+    { q: 35, label: "Ray Optics" },
+    { q: 36, label: "Nuclei" },
+  ],
+  "5m": [
+    { q: 37, options: ["Electric Charges & Fields", "Electrostatic Potential & Capacitance"] },
+    { q: 38, label: "Current Electricity" },
+    { q: 39, label: "Moving Charges & Magnetism" },
+    { q: 40, options: ["Ray Optics", "Wave Optics"] },
+    { q: 41, label: "Semiconductor Electronics" },
+  ],
+  "numeric": [
+    { q: 42, options: ["Electric Charges & Fields", "Electrostatic Potential & Capacitance"] },
+    { q: 43, label: "Current Electricity" },
+    { q: 44, label: "Alternating Current" },
+    { q: 45, options: ["Ray Optics", "Wave Optics"] },
+  ],
+};
+
 export default function QuestionPatterns() {
   const { subjectId } = useParams();
   const navigate = useNavigate();
@@ -160,7 +197,16 @@ export default function QuestionPatterns() {
       }))
     : null;
 
-  const groups = rangeGroups || mathGroups || bpGroups;
+  // Explicit "question number + chapter" list (Physics 2M/3M/5M/VI, Maths 6+4M).
+  // Items may be single {q,label} or an OR choice {q,options:[a,b]}.
+  const explicitList = (isPhysics && PHYSICS_CHAPTERS[activePattern])
+    || (isMath6p4 && MATH_CHAPTERS["6p4m"])
+    || null;
+  const explicitEquation = isMath6p4
+    ? "6+4=10m"
+    : (activeMeta?.equation?.replace(/\s+/g, "") || `${activeMeta?.total}m`);
+
+  const groups = rangeGroups || mathGroups || (explicitList ? [] : bpGroups);
 
   const activeGroup = groups.find((g) => g.key === selectedKey);
   const filtered = activeGroup ? questions.filter(activeGroup.match) : [];
@@ -230,7 +276,7 @@ export default function QuestionPatterns() {
         )}
 
         {/* Chapter groups wrapped by a bracket with the marks equation on the right */}
-        {!activeMeta?.children && !isMath6p4 && (
+        {!activeMeta?.children && !explicitList && (
         <div className="relative mt-4">
           <div className="absolute -left-4 top-0 h-0.5 w-4 rounded-full bg-slate-400" />
           <div className="absolute -left-4 bottom-0 h-0.5 w-4 rounded-full bg-slate-400" />
@@ -281,28 +327,40 @@ export default function QuestionPatterns() {
         </div>
         )}
 
-        {/* Maths Part VI (6+4M) — two separate cards, each with two chapter options stacked (OR) */}
-        {isMath6p4 && (
+        {/* Explicit "question number + chapter" list (Physics 2M/3M/5M/VI, Maths 6+4M) */}
+        {explicitList && (
         <div className="relative mt-4">
           <div className="absolute -left-4 top-0 h-0.5 w-4 rounded-full bg-slate-400" />
           <div className="absolute -left-4 bottom-0 h-0.5 w-4 rounded-full bg-slate-400" />
 
           <div className="rounded-r-3xl border-y-2 border-r-2 border-slate-400 py-3 pl-1 pr-16">
-            <div className="space-y-3">
-              {MATH_CHAPTERS["6p4m"].map((c) => (
-                <div
-                  key={c.q}
-                  data-testid={`math6p4-q${c.q}`}
-                  className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-4 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
-                >
-                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-slate-900 text-[11px] font-bold text-white">{c.q}</span>
-                  <div className="flex flex-1 flex-col items-center gap-1.5">
-                    <span className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-center text-sm font-extrabold text-slate-900">{c.options[0]}</span>
-                    <span className="text-[11px] font-bold uppercase tracking-widest text-slate-400">OR</span>
-                    <span className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-center text-sm font-extrabold text-slate-900">{c.options[1]}</span>
+            <div className="space-y-2.5">
+              {explicitList.map((c) => (
+                c.options ? (
+                  <div
+                    key={c.q}
+                    data-testid={`explicit-q${c.q}`}
+                    className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-4 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
+                  >
+                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-slate-900 text-[11px] font-bold text-white">{c.q}</span>
+                    <div className="flex flex-1 flex-col items-center gap-1.5">
+                      <span className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-center text-sm font-extrabold text-slate-900">{c.options[0]}</span>
+                      <span className="text-[11px] font-bold uppercase tracking-widest text-slate-400">OR</span>
+                      <span className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-center text-sm font-extrabold text-slate-900">{c.options[1]}</span>
+                    </div>
+                    {c.note && <span className={`ml-1 shrink-0 rounded-lg px-3 py-1.5 text-sm font-bold text-white ${accent.icon}`}>{c.note}</span>}
                   </div>
-                  <span className={`ml-1 shrink-0 rounded-lg px-3 py-1.5 text-sm font-bold text-white ${accent.icon}`}>{c.note}</span>
-                </div>
+                ) : (
+                  <div
+                    key={c.q}
+                    data-testid={`explicit-q${c.q}`}
+                    className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
+                  >
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-slate-900 text-[11px] font-bold text-white">{c.q}</span>
+                    <span className="text-sm font-extrabold text-slate-900">{c.label}</span>
+                    {c.note && <span className="rounded-md border border-blue-200 bg-blue-50 px-2 py-0.5 text-[10px] font-semibold text-blue-700">{c.note}</span>}
+                  </div>
+                )
               ))}
             </div>
           </div>
@@ -312,7 +370,7 @@ export default function QuestionPatterns() {
             className="absolute right-4 top-1/2 text-base font-extrabold tracking-wide text-slate-900"
             style={{ writingMode: "vertical-rl", transform: "translateY(-50%) rotate(180deg)" }}
           >
-            6+4=10m
+            {explicitEquation}
           </span>
         </div>
         )}
