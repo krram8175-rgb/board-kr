@@ -26,7 +26,6 @@ export default function ExamChapters() {
         <main className="mx-auto max-w-2xl px-4 py-8 md:px-6">
           <div className="mb-4 flex items-center gap-2">
             <span className={`rounded-lg px-2.5 py-1 text-xs font-extrabold text-white ${meta.bg}`}>{clsMeta.label}</span>
-            <span className="text-sm font-semibold text-slate-500">{clsMeta.sub}</span>
             <span className="ml-auto text-xs font-medium text-slate-400">{chapters.length} chapters</span>
           </div>
           <div className="space-y-2.5">
