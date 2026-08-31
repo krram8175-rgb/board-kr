@@ -84,8 +84,8 @@ const MATH_CHAPTERS = {
     { q: 45, label: "Differential Equations" },
   ],
   "6p4m": [
-    { q: 46, label: "Linear Programming (or) Integrals", note: "6m" },
-    { q: 47, label: "Determinants (or) Continuity & Differentiability", note: "4m" },
+    { q: 46, options: ["Linear Programming", "Integrals"], note: "6m" },
+    { q: 47, options: ["Determinants", "Continuity & Differentiability"], note: "4m" },
   ],
 };
 
@@ -152,8 +152,9 @@ export default function QuestionPatterns() {
       }))
     : null;
 
-  // Maths — explicit chapter list with question numbers for 2M/3M/5M/6+4M
-  const mathGroups = subjectId === "math" && MATH_CHAPTERS[activePattern]
+  // Maths — explicit chapter list with question numbers for 2M/3M/5M
+  const isMath6p4 = subjectId === "math" && activePattern === "6p4m";
+  const mathGroups = subjectId === "math" && MATH_CHAPTERS[activePattern] && !isMath6p4
     ? MATH_CHAPTERS[activePattern].map((c) => ({
         key: `q${c.q}`, label: c.label, note: c.note, qno: c.q, hideCount: true, match: () => false,
       }))
@@ -229,7 +230,7 @@ export default function QuestionPatterns() {
         )}
 
         {/* Chapter groups wrapped by a bracket with the marks equation on the right */}
-        {!activeMeta?.children && (
+        {!activeMeta?.children && !isMath6p4 && (
         <div className="relative mt-4">
           <div className="absolute -left-4 top-0 h-0.5 w-4 rounded-full bg-slate-400" />
           <div className="absolute -left-4 bottom-0 h-0.5 w-4 rounded-full bg-slate-400" />
@@ -280,7 +281,41 @@ export default function QuestionPatterns() {
         </div>
         )}
 
-        {/* Questions for the selected group */}
+        {/* Maths Part VI (6+4M) — two separate cards, each with two chapter options stacked (OR) */}
+        {isMath6p4 && (
+        <div className="relative mt-4">
+          <div className="absolute -left-4 top-0 h-0.5 w-4 rounded-full bg-slate-400" />
+          <div className="absolute -left-4 bottom-0 h-0.5 w-4 rounded-full bg-slate-400" />
+
+          <div className="rounded-r-3xl border-y-2 border-r-2 border-slate-400 py-3 pl-1 pr-16">
+            <div className="space-y-3">
+              {MATH_CHAPTERS["6p4m"].map((c) => (
+                <div
+                  key={c.q}
+                  data-testid={`math6p4-q${c.q}`}
+                  className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-4 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
+                >
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-slate-900 text-[11px] font-bold text-white">{c.q}</span>
+                  <div className="flex flex-1 flex-col items-center gap-1.5">
+                    <span className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-center text-sm font-extrabold text-slate-900">{c.options[0]}</span>
+                    <span className="text-[11px] font-bold uppercase tracking-widest text-slate-400">OR</span>
+                    <span className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-center text-sm font-extrabold text-slate-900">{c.options[1]}</span>
+                  </div>
+                  <span className={`ml-1 shrink-0 rounded-lg px-3 py-1.5 text-sm font-bold text-white ${accent.icon}`}>{c.note}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <span
+            data-testid="pattern-total-marks"
+            className="absolute right-4 top-1/2 text-base font-extrabold tracking-wide text-slate-900"
+            style={{ writingMode: "vertical-rl", transform: "translateY(-50%) rotate(180deg)" }}
+          >
+            6+4=10m
+          </span>
+        </div>
+        )}
         {activeGroup && (
           <div data-testid="group-questions" className="space-y-4 pt-2">
             <h2 className="text-sm font-bold text-slate-700">{activeGroup.label} · {activeMeta?.label} Questions</h2>
