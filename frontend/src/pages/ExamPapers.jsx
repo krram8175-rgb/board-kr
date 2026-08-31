@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { toast } from "sonner";
-import { Stethoscope, FlaskConical, FileText } from "lucide-react";
+import { Stethoscope, FlaskConical, FileText, Lock } from "lucide-react";
 
 const EXAM_META = {
   neet: { name: "NEET", Icon: Stethoscope, langs: ["English", "हिन्दी"] },
@@ -125,7 +125,9 @@ export default function ExamPapers() {
         </div>
 
         <div className="space-y-6">
-          {groups.map((g) => (
+          {groups.map((g) => {
+            const locked = examId === "neet" && g.year <= 2023;
+            return (
             <section key={g.year} data-testid={`year-group-${g.year}`}>
               <h2 className="mb-2.5 text-sm font-extrabold text-slate-500">{g.year}</h2>
               <div className="space-y-3">
@@ -133,14 +135,15 @@ export default function ExamPapers() {
                   <div
                     key={i}
                     data-testid={`paper-${g.year}-${i}`}
-                    className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm"
+                    data-locked={locked ? "true" : "false"}
+                    className={`rounded-xl border border-slate-200 p-4 shadow-sm ${locked ? "bg-slate-50" : "bg-white"}`}
                   >
                     <div className="flex items-start gap-3">
-                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-indigo-50 text-[#5B50E6]">
+                      <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${locked ? "bg-slate-100 text-slate-400" : "bg-indigo-50 text-[#5B50E6]"}`}>
                         <FileText className="h-4 w-4" />
                       </span>
                       <div className="min-w-0 flex-1">
-                        <p className="text-sm font-extrabold text-slate-900">{p.name}</p>
+                        <p className={`text-sm font-extrabold ${locked ? "text-slate-400" : "text-slate-900"}`}>{p.name}</p>
                         <p className="text-xs text-slate-500">{p.date}</p>
                         <div className="mt-1.5 flex gap-1.5">
                           {meta.langs.map((l) => (
@@ -148,26 +151,34 @@ export default function ExamPapers() {
                           ))}
                         </div>
                       </div>
+                      {locked && (
+                        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-rose-50 text-rose-500 ring-1 ring-rose-100">
+                          <Lock className="h-4 w-4" />
+                        </span>
+                      )}
                     </div>
-                    <div className="mt-3 flex gap-2">
-                      <button
-                        onClick={soon}
-                        className="flex-1 rounded-lg bg-[#5B50E6] py-2 text-sm font-bold text-white transition-all hover:bg-[#4a41c9]"
-                      >
-                        Take Test
-                      </button>
-                      <button
-                        onClick={soon}
-                        className="flex-1 rounded-lg border border-indigo-200 bg-indigo-50 py-2 text-sm font-bold text-[#5B50E6] transition-all hover:bg-indigo-100"
-                      >
-                        Practice
-                      </button>
-                    </div>
+                    {!locked && (
+                      <div className="mt-3 flex gap-2">
+                        <button
+                          onClick={soon}
+                          className="flex-1 rounded-lg bg-[#5B50E6] py-2 text-sm font-bold text-white transition-all hover:bg-[#4a41c9]"
+                        >
+                          Take Test
+                        </button>
+                        <button
+                          onClick={soon}
+                          className="flex-1 rounded-lg border border-indigo-200 bg-indigo-50 py-2 text-sm font-bold text-[#5B50E6] transition-all hover:bg-indigo-100"
+                        >
+                          Practice
+                        </button>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
             </section>
-          ))}
+            );
+          })}
         </div>
       </main>
     </div>
