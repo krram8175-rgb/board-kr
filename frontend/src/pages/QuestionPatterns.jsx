@@ -9,15 +9,10 @@ import { ACCENTS } from "@/lib/theme";
 import { BLUEPRINTS, MARK_TO_PART } from "@/lib/blueprints";
 import { FileText, BarChart3, ChevronRight, FileQuestion, Lock } from "lucide-react";
 
-// Free (unlocked) item count per subject+pattern for the explicit lists — everything
-// beyond the count shows a lock symbol. Patterns not listed here are fully unlocked.
-const FREE_COUNT = {
-  physics: { "2m": 3, "3m": 3, "5m": 2 },
-  chemistry: { "2m": 2, "3m-inorg": 2, "3m-phys": 2, "5m-org": 2, "numeric": 2 },
-  math: { "2m": 3, "3m": 3, "5m": 3 },
-};
-// Maths Part VI (6+4M) — only these two chapter options are unlocked; the OR alternatives lock.
-const MATH_6P4_FREE = ["Linear Programming", "Determinants"];
+// Trial subjects: only MCQ & FBK are accessible (first group free); every other
+// pattern is fully locked. Maths Part VI (6+4M) locks both chapter options.
+const TRIAL_SUBJECTS = ["physics", "chemistry", "math"];
+const MATH_6P4_FREE = [];
 
 // Map chapter name -> chapter number (Karnataka II PUC Physics)
 const CHAPTER_NO = {
@@ -253,7 +248,11 @@ export default function QuestionPatterns() {
     || (subjectId === "chemistry" && CHEMISTRY_CHAPTERS[activePattern])
     || (isMath6p4 && MATH_CHAPTERS["6p4m"])
     || null;
-  const freeCount = FREE_COUNT[subjectId]?.[activePattern];
+  const freeCount = (explicitList && !isMath6p4) ? 0 : undefined;
+  const trialSubject = TRIAL_SUBJECTS.includes(subjectId);
+  // In the generic groups block (MCQ/FBK ranges, Maths 2M/3M/5M), lock everything
+  // except the first group of MCQ & FBK.
+  const genericFree = isMcqFbk ? 1 : 0;
   const countFrac = activeMeta?.count && /\bof\b/i.test(activeMeta.count)
     ? activeMeta.count.replace(/\s*of\s*/i, "/")
     : null;
@@ -355,9 +354,26 @@ export default function QuestionPatterns() {
               {groups.length === 0 && (
                 <p className="px-4 py-6 text-center text-sm text-slate-400">No chapters with sample questions yet.</p>
               )}
-              {groups.map((g) => {
+              {groups.map((g, gi) => {
                 const active = selectedKey === g.key;
                 const count = g.count != null ? g.count : questions.filter(g.match).length;
+                const gLocked = trialSubject && gi >= genericFree;
+                if (gLocked) {
+                  return (
+                    <div
+                      key={g.key}
+                      data-testid={`chapter-group-${g.key}`}
+                      data-locked="true"
+                      className="flex w-full items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-left shadow-sm"
+                    >
+                      {g.qno != null && (
+                        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-slate-300 text-[11px] font-bold text-white">{g.qno}</span>
+                      )}
+                      <span className="text-sm font-extrabold text-slate-400">{g.label}</span>
+                      <span className="ml-auto flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-rose-50 text-rose-500 ring-1 ring-rose-100"><Lock className="h-4 w-4" /></span>
+                    </div>
+                  );
+                }
                 return (
                   <button
                     key={g.key}
