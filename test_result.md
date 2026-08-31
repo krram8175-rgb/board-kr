@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Verify the Blueprint tables (Physics, Chemistry, Mathematics) in the app against the official KSEAB 2026-27 II PUC blueprint PDFs and fix any mismatch."
+user_problem_statement: "Verify exam-card behavior on the home screen of the Karnataka Board Exam app (bug fix verification). Ensure JEE Main's and JEE Advance cards show 'Coming Soon' and do NOT navigate to any dashboard."
 
 frontend:
   - task: "Blueprint tables match official KSEAB PDFs (Physics/Chemistry/Mathematics)"
@@ -119,6 +119,21 @@ frontend:
         -working: true
         -agent: "testing"
         -comment: "✅ VERIFIED ALL THREE BLUEPRINTS SUCCESSFULLY. MATHEMATICS: Confirmed 6 part columns (PART-A 1M, PART-B 2M, PART-C 3M, PART-D 5M, PART-E 6M, PART-E 4M). All critical chapter mappings verified: Determinants Ch4 E4=1, Continuity Ch5 E4=1, Integrals Ch7 E6=1, Linear Programming Ch12 E6=1 C=blank, Matrices Ch3 D=1, Differential Equations Ch9 C=blank D=1. Bottom totals: Questions 20/20, 06/09, 06/09, 04/07, 01/02, 01/02; Marks 20/20, 12/18, 18/27, 20/35, 06/12, 04/08. PHYSICS: Subject 33, Max 70, 4 parts A/B/C/D, 14 chapters, totals Q: 20/20, 05/08, 05/08, 05/09; M: 20/20, 10/16, 15/24, 25/45. CHEMISTRY: Subject 34, Max 70, 4 parts A/B/C/D, 10 units, totals Q: 20/20, 03/05, 08/15, 04/06; M: 20/20, 06/10, 24/45, 20/30. All tables render correctly with official KSEAB 2026-27 values. Screenshots captured for evidence."
+
+  - task: "Exam card behavior - JEE Main's and JEE Advance disabled (Coming Soon)"
+    implemented: true
+    working: true
+    file: "frontend/src/pages/ExamHome.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: "NA"
+        -agent: "main"
+        -comment: "Bug fix requested: Verify that JEE Main's and JEE Advance cards show 'Coming Soon' badge and do NOT navigate to any dashboard when clicked. Active cards (PUC, KCET, NEET) should navigate correctly."
+        -working: true
+        -agent: "testing"
+        -comment: "✅ BUG FIX VERIFIED SUCCESSFULLY. CRITICAL TESTS PASSED: (1) JEE Main's card shows 'Coming Soon' badge, has disabled attribute, and does NOT navigate when clicked - URL stays on home page. (2) JEE Advance card shows 'Coming Soon' badge, has disabled attribute, and does NOT navigate when clicked - URL stays on home page. ACTIVE CARDS VERIFIED: (3) KCET navigates to /exam/kcet with dashboard rendering correctly (Exam Info, Analytics, 4 subjects: Physics/Chemistry/Mathematics/Biology, Full Paper). (4) NEET navigates to /exam/neet with dashboard rendering correctly (Exam Info, Analytics, 3 subjects: Physics/Chemistry/Biology, Full Paper). (5) 2nd PUC Karnataka Board navigates to /board with subject content loading. All 5 exam cards render on home page. Implementation is correct: disabled cards have active:false, no 'to' property, onClick checks e.active before navigating. Screenshots captured for evidence."
 
 metadata:
   created_by: "main_agent"
@@ -137,3 +152,7 @@ agent_communication:
     -message: "Please verify the Blueprint page for all three subjects. Navigate to /subject/physics/blueprint, /subject/chemistry/blueprint, /subject/math/blueprint. Confirm the tables render with correct per-chapter part counts and totals. CRITICAL FOCUS = Mathematics: it must now show SIX part columns (PART-A 1mark, PART-B 2mark, PART-C 3mark, PART-D 5mark, PART-E 6mark, PART-E 4mark). Determinants row -> 4-mark E = 1; Continuity and Differentiability -> 4-mark E = 1; Integrals -> 6-mark E = 1; Linear Programming -> 6-mark E = 1. Bottom totals row for marks should read 20/20, 12/18, 18/27, 20/35, 06/12, 04/08. Physics (Max 70, parts A/B/C/D, totals 20/20, 10/16, 15/24, 25/45) and Chemistry (Max 70, parts A/B/C/D, totals 20/20, 06/10, 24/45, 20/30) should also render correctly."
     -agent: "testing"
     -message: "✅ VERIFICATION COMPLETE - ALL BLUEPRINTS PASS. Tested all three blueprint pages (/subject/math/blueprint, /subject/physics/blueprint, /subject/chemistry/blueprint). Mathematics blueprint fix is working perfectly: the two Part-E columns (6 Mark and 4 Mark) are rendering correctly with accurate chapter mappings. All critical cells verified against official KSEAB 2026-27 values. Physics and Chemistry blueprints also render correctly. Screenshots captured. No issues found. Ready for user acceptance."
+    -agent: "main"
+    -message: "New bug fix verification requested: Verify exam-card behavior on home screen. Test that JEE Main's and JEE Advance cards show 'Coming Soon' badge and do NOT navigate to any dashboard when clicked. Verify active cards (PUC, KCET, NEET) navigate correctly to their respective pages."
+    -agent: "testing"
+    -message: "✅ BUG FIX VERIFICATION COMPLETE - ALL TESTS PASSED. Tested all 5 exam cards on home page. CRITICAL BUG FIX CONFIRMED: JEE Main's and JEE Advance both show 'Coming Soon' badges, have disabled attributes, and do NOT navigate when clicked (URL stays on home page /). ACTIVE CARDS WORKING: KCET navigates to /exam/kcet with full dashboard (Exam Info, Analytics, 4 subjects, Full Paper). NEET navigates to /exam/neet with full dashboard (Exam Info, Analytics, 3 subjects, Full Paper). PUC navigates to /board with subject content. Implementation is correct and bug fix is verified. No issues found."
