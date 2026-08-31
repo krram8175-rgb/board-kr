@@ -29,6 +29,26 @@ const EXAMS = {
       { id: "biology", label: "Biology", icon: Dna, dot: "bg-rose-600" },
     ],
   },
+  "jee-main": {
+    name: "JEE Main's",
+    accent: "bg-violet-600",
+    Icon: Sigma,
+    subjects: [
+      { id: "physics", label: "Physics", icon: Atom, dot: "bg-blue-600" },
+      { id: "chemistry", label: "Chemistry", icon: FlaskConical, dot: "bg-emerald-600" },
+      { id: "math", label: "Mathematics", icon: Sigma, dot: "bg-violet-600" },
+    ],
+  },
+  "jee-adv": {
+    name: "JEE Advance",
+    accent: "bg-amber-600",
+    Icon: Atom,
+    subjects: [
+      { id: "physics", label: "Physics", icon: Atom, dot: "bg-blue-600" },
+      { id: "chemistry", label: "Chemistry", icon: FlaskConical, dot: "bg-emerald-600" },
+      { id: "math", label: "Mathematics", icon: Sigma, dot: "bg-violet-600" },
+    ],
+  },
 };
 
 export default function ExamDashboard() {
