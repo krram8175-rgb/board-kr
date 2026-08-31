@@ -60,7 +60,7 @@ export default function Blueprint() {
                   <th className="border border-slate-300 px-2 py-2 text-xs font-bold text-slate-700">Marks</th>
                   {bp.parts.map((p) => (
                     <th key={p.key} className="border border-slate-300 px-2 py-2 text-xs font-bold text-slate-700">
-                      <div>PART-{p.key}</div>
+                      <div>PART-{p.label || p.key}</div>
                       <div className="text-[10px] font-medium text-slate-500">{p.mark} Mark</div>
                       <div className="text-[10px] font-normal text-slate-400">No of Qs {p.qs}</div>
                     </th>

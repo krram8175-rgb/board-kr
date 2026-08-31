@@ -101,3 +101,39 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+
+user_problem_statement: "Verify the Blueprint tables (Physics, Chemistry, Mathematics) in the app against the official KSEAB 2026-27 II PUC blueprint PDFs and fix any mismatch."
+
+frontend:
+  - task: "Blueprint tables match official KSEAB PDFs (Physics/Chemistry/Mathematics)"
+    implemented: true
+    working: true
+    file: "frontend/src/lib/blueprints.js, frontend/src/pages/Blueprint.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: "NA"
+        -agent: "main"
+        -comment: "Verified Physics & Chemistry blueprint data already matched the official PDFs exactly. Found and fixed the Mathematics blueprint: Part E was a single 6-mark column with wrong chapter mapping. Split into two columns — Part E (6 marks: Integrals CH7 + Linear Programming CH12) and Part E (4 marks: Determinants CH4 + Continuity CH5). Also corrected Matrices (D=1), Differential Equations (C blank, D=1), Linear Programming (C blank). Column totals now: A 20/20, B 06/09 12/18, C 06/09 18/27, D 04/07 20/35, E6 01/02 06/12, E4 01/02 04/08. Needs verification that all three blueprint tables render and match the official values."
+        -working: true
+        -agent: "testing"
+        -comment: "✅ VERIFIED ALL THREE BLUEPRINTS SUCCESSFULLY. MATHEMATICS: Confirmed 6 part columns (PART-A 1M, PART-B 2M, PART-C 3M, PART-D 5M, PART-E 6M, PART-E 4M). All critical chapter mappings verified: Determinants Ch4 E4=1, Continuity Ch5 E4=1, Integrals Ch7 E6=1, Linear Programming Ch12 E6=1 C=blank, Matrices Ch3 D=1, Differential Equations Ch9 C=blank D=1. Bottom totals: Questions 20/20, 06/09, 06/09, 04/07, 01/02, 01/02; Marks 20/20, 12/18, 18/27, 20/35, 06/12, 04/08. PHYSICS: Subject 33, Max 70, 4 parts A/B/C/D, 14 chapters, totals Q: 20/20, 05/08, 05/08, 05/09; M: 20/20, 10/16, 15/24, 25/45. CHEMISTRY: Subject 34, Max 70, 4 parts A/B/C/D, 10 units, totals Q: 20/20, 03/05, 08/15, 04/06; M: 20/20, 06/10, 24/45, 20/30. All tables render correctly with official KSEAB 2026-27 values. Screenshots captured for evidence."
+
+metadata:
+  created_by: "main_agent"
+  version: "1.0"
+  test_sequence: 0
+  run_ui: false
+
+test_plan:
+  current_focus: []
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+    -agent: "main"
+    -message: "Please verify the Blueprint page for all three subjects. Navigate to /subject/physics/blueprint, /subject/chemistry/blueprint, /subject/math/blueprint. Confirm the tables render with correct per-chapter part counts and totals. CRITICAL FOCUS = Mathematics: it must now show SIX part columns (PART-A 1mark, PART-B 2mark, PART-C 3mark, PART-D 5mark, PART-E 6mark, PART-E 4mark). Determinants row -> 4-mark E = 1; Continuity and Differentiability -> 4-mark E = 1; Integrals -> 6-mark E = 1; Linear Programming -> 6-mark E = 1. Bottom totals row for marks should read 20/20, 12/18, 18/27, 20/35, 06/12, 04/08. Physics (Max 70, parts A/B/C/D, totals 20/20, 10/16, 15/24, 25/45) and Chemistry (Max 70, parts A/B/C/D, totals 20/20, 06/10, 24/45, 20/30) should also render correctly."
+    -agent: "testing"
+    -message: "✅ VERIFICATION COMPLETE - ALL BLUEPRINTS PASS. Tested all three blueprint pages (/subject/math/blueprint, /subject/physics/blueprint, /subject/chemistry/blueprint). Mathematics blueprint fix is working perfectly: the two Part-E columns (6 Mark and 4 Mark) are rendering correctly with accurate chapter mappings. All critical cells verified against official KSEAB 2026-27 values. Physics and Chemistry blueprints also render correctly. Screenshots captured. No issues found. Ready for user acceptance."
