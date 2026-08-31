@@ -5,9 +5,16 @@ import { getSubject } from "@/lib/api";
 import { Header } from "@/components/Header";
 import { ACCENTS } from "@/lib/theme";
 import { BLUEPRINTS } from "@/lib/blueprints";
-import { Atom, FlaskConical, Sigma, Dna, Cpu, BookOpen, Languages, ScrollText } from "lucide-react";
+import { Atom, FlaskConical, Sigma, Dna, Cpu, BookOpen, Languages, ScrollText, Lock } from "lucide-react";
 
 const ICONS = { Atom, FlaskConical, Sigma, Dna, Cpu, BookOpen, Languages, ScrollText };
+
+// Free (unlocked) chapters per subject — everything else shows a lock symbol.
+const FREE_CHAPTERS = {
+  physics: [1, 2, 3],
+  chemistry: [1, 2, 4],
+  math: [3, 4, 12],
+};
 
 export default function ChapterWise() {
   const { subjectId } = useParams();
@@ -32,20 +39,32 @@ export default function ChapterWise() {
       <main className="mx-auto max-w-2xl px-4 py-8 md:px-6">
         {chapters.length ? (
           <div data-testid="chapterwise-list" className="space-y-3">
-            {chapters.map((c, i) => (
-              <div
-                key={c.ch}
-                data-testid={`chapterwise-item-${c.ch}`}
-                style={{ animationDelay: `${i * 40}ms` }}
-                className="animate-fade-up flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm"
-              >
-                <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-sm font-extrabold text-white ${accent.icon}`}>
-                  {c.ch}
-                </span>
-                <span className="text-sm font-semibold text-slate-900">{c.chapter}</span>
-                <span className="ml-auto rounded-md bg-slate-100 px-2 py-0.5 text-xs font-bold text-slate-700">{c.marks} marks</span>
-              </div>
-            ))}
+            {chapters.map((c, i) => {
+              const isFree = (FREE_CHAPTERS[subjectId] || []).includes(c.ch);
+              return (
+                <div
+                  key={c.ch}
+                  data-testid={`chapterwise-item-${c.ch}`}
+                  data-locked={isFree ? "false" : "true"}
+                  style={{ animationDelay: `${i * 40}ms` }}
+                  className={`animate-fade-up flex items-center gap-3 rounded-xl border px-4 py-3 shadow-sm ${
+                    isFree ? "border-slate-200 bg-white" : "border-slate-200 bg-slate-50"
+                  }`}
+                >
+                  <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-sm font-extrabold text-white ${isFree ? accent.icon : "bg-slate-300"}`}>
+                    {c.ch}
+                  </span>
+                  <span className={`text-sm font-semibold ${isFree ? "text-slate-900" : "text-slate-400"}`}>{c.chapter}</span>
+                  {isFree ? (
+                    <span className="ml-auto rounded-md bg-slate-100 px-2 py-0.5 text-xs font-bold text-slate-700">{c.marks} marks</span>
+                  ) : (
+                    <span className="ml-auto flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-rose-50 text-rose-500 ring-1 ring-rose-100">
+                      <Lock className="h-4 w-4" />
+                    </span>
+                  )}
+                </div>
+              );
+            })}
           </div>
         ) : (
           <div data-testid="chapterwise-empty" className="rounded-2xl border border-dashed border-slate-300 bg-white py-16 text-center">
