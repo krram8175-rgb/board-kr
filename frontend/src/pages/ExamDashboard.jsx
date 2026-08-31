@@ -124,11 +124,11 @@ export default function ExamDashboard() {
         <button
           data-testid="exam-full-paper-pill"
           onClick={() => soon("Full Paper")}
-          className="group flex w-full items-center gap-2.5 rounded-xl bg-indigo-900 px-4 py-3 shadow-md transition-all hover:-translate-y-0.5 hover:shadow-lg"
+          className="group flex w-full items-center gap-2.5 rounded-xl bg-[#5B50E6] px-4 py-3 shadow-md transition-all hover:-translate-y-0.5 hover:shadow-lg"
         >
-          <FileText className="h-4 w-4 text-indigo-200" />
+          <FileText className="h-4 w-4 text-indigo-100" />
           <span className="text-sm font-bold text-white">Full Paper</span>
-          <ChevronRight className="ml-auto h-4 w-4 text-indigo-300 transition-transform group-hover:translate-x-1" />
+          <ChevronRight className="ml-auto h-4 w-4 text-indigo-100 transition-transform group-hover:translate-x-1" />
         </button>
       </main>
     </div>
