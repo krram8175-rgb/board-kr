@@ -19,13 +19,6 @@ export default function ExamHome() {
       <Header />
 
       <main className="mx-auto max-w-xl px-4 py-10 md:px-6">
-        <div className="mb-8 text-center">
-          <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 md:text-4xl">
-            Exams Made <span className="text-blue-600">Easy</span> Here
-          </h1>
-          <p className="mt-2 text-sm text-slate-500">Pick your exam to get patterns, blueprints & papers</p>
-        </div>
-
         <div data-testid="exam-list" className="space-y-4">
           {EXAMS.map((e, i) => {
             const Icon = e.icon;
