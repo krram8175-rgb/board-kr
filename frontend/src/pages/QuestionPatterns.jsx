@@ -7,7 +7,17 @@ import { QuestionCard } from "@/components/QuestionCard";
 import { SubscriptionPaywall } from "@/components/SubscriptionPaywall";
 import { ACCENTS } from "@/lib/theme";
 import { BLUEPRINTS, MARK_TO_PART } from "@/lib/blueprints";
-import { FileText, BarChart3, ChevronRight, FileQuestion } from "lucide-react";
+import { FileText, BarChart3, ChevronRight, FileQuestion, Lock } from "lucide-react";
+
+// Free (unlocked) item count per subject+pattern for the explicit lists — everything
+// beyond the count shows a lock symbol. Patterns not listed here are fully unlocked.
+const FREE_COUNT = {
+  physics: { "2m": 3, "3m": 3, "5m": 2 },
+  chemistry: { "2m": 2, "3m-inorg": 2, "3m-phys": 2, "5m-org": 2, "numeric": 2 },
+  math: { "2m": 3, "3m": 3, "5m": 3 },
+};
+// Maths Part VI (6+4M) — only these two chapter options are unlocked; the OR alternatives lock.
+const MATH_6P4_FREE = ["Linear Programming", "Determinants"];
 
 // Map chapter name -> chapter number (Karnataka II PUC Physics)
 const CHAPTER_NO = {
@@ -243,6 +253,7 @@ export default function QuestionPatterns() {
     || (subjectId === "chemistry" && CHEMISTRY_CHAPTERS[activePattern])
     || (isMath6p4 && MATH_CHAPTERS["6p4m"])
     || null;
+  const freeCount = FREE_COUNT[subjectId]?.[activePattern];
   const countFrac = activeMeta?.count && /\bof\b/i.test(activeMeta.count)
     ? activeMeta.count.replace(/\s*of\s*/i, "/")
     : null;
@@ -393,34 +404,58 @@ export default function QuestionPatterns() {
 
           <div className="rounded-r-3xl border-y-2 border-r-2 border-slate-400 py-3 pl-1 pr-16">
             <div className="space-y-2.5">
-              {explicitList.map((c) => (
-                c.options ? (
+              {explicitList.map((c, ci) => {
+                const itemLocked = freeCount != null && ci >= freeCount;
+                return c.options ? (
                   <div
                     key={c.q}
                     data-testid={`explicit-q${c.q}`}
-                    className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-4 shadow-sm"
+                    className={`flex items-center gap-3 rounded-2xl border px-4 py-4 shadow-sm ${itemLocked ? "border-slate-200 bg-slate-50" : "border-slate-200 bg-white"}`}
                   >
-                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-slate-900 text-[11px] font-bold text-white">{c.q}</span>
+                    <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[11px] font-bold text-white ${itemLocked ? "bg-slate-300" : "bg-slate-900"}`}>{c.q}</span>
                     <div className="flex flex-1 flex-col items-center gap-1.5">
                       {c.options.map((o, oi) => {
                         const oKey = `${c.q}-${oi}`;
                         const oActive = selectedKey === oKey;
+                        const optLocked = isMath6p4 ? !MATH_6P4_FREE.includes(o) : itemLocked;
                         return (
                           <React.Fragment key={oi}>
                             {oi > 0 && <span className="text-[11px] font-bold uppercase tracking-widest text-slate-400">OR</span>}
-                            <button
-                              type="button"
-                              data-testid={`explicit-opt-${c.q}-${oi}`}
-                              onClick={() => setSelectedKey(oActive ? null : oKey)}
-                              className={`w-full rounded-lg border px-3 py-2 text-center text-sm font-extrabold transition-all hover:-translate-y-0.5 hover:shadow-sm ${oActive ? "border-blue-500 bg-blue-50 text-blue-700" : "border-slate-200 bg-slate-50 text-slate-900"}`}
-                            >
-                              {o}
-                            </button>
+                            {optLocked ? (
+                              <div className="flex w-full items-center justify-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-center text-sm font-extrabold text-slate-400">
+                                {o}
+                                <Lock className="h-3.5 w-3.5 text-rose-400" />
+                              </div>
+                            ) : (
+                              <button
+                                type="button"
+                                data-testid={`explicit-opt-${c.q}-${oi}`}
+                                onClick={() => setSelectedKey(oActive ? null : oKey)}
+                                className={`w-full rounded-lg border px-3 py-2 text-center text-sm font-extrabold transition-all hover:-translate-y-0.5 hover:shadow-sm ${oActive ? "border-blue-500 bg-blue-50 text-blue-700" : "border-slate-200 bg-slate-50 text-slate-900"}`}
+                              >
+                                {o}
+                              </button>
+                            )}
                           </React.Fragment>
                         );
                       })}
                     </div>
-                    {c.note && <span className={`ml-1 shrink-0 rounded-lg px-3 py-1.5 text-sm font-bold text-white ${accent.icon}`}>{c.note}</span>}
+                    {itemLocked ? (
+                      <span className="ml-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-rose-50 text-rose-500 ring-1 ring-rose-100"><Lock className="h-4 w-4" /></span>
+                    ) : (
+                      c.note && <span className={`ml-1 shrink-0 rounded-lg px-3 py-1.5 text-sm font-bold text-white ${accent.icon}`}>{c.note}</span>
+                    )}
+                  </div>
+                ) : itemLocked ? (
+                  <div
+                    key={c.q}
+                    data-testid={`explicit-q${c.q}`}
+                    data-locked="true"
+                    className="flex w-full items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 shadow-sm"
+                  >
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-slate-300 text-[11px] font-bold text-white">{c.q}</span>
+                    <span className="text-sm font-extrabold text-slate-400">{c.label}</span>
+                    <span className="ml-auto flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-rose-50 text-rose-500 ring-1 ring-rose-100"><Lock className="h-4 w-4" /></span>
                   </div>
                 ) : (
                   (() => {
@@ -439,8 +474,8 @@ export default function QuestionPatterns() {
                       </button>
                     );
                   })()
-                )
-              ))}
+                );
+              })}
             </div>
           </div>
 
