@@ -6,14 +6,15 @@ export const Header = ({ showBack = false, title, Icon, bgClass = "bg-blue-600" 
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Route-based back: always go to the logical parent (never re-open a viewed PDF).
+  // Route-based back: go up exactly one level (never re-open a viewed PDF).
   const goBack = () => {
     const parts = (location.pathname || "").split("/").filter(Boolean);
+    // /subject/:id  -> subject board
+    if (parts[0] === "subject" && parts.length === 2) { navigate("/board"); return; }
+    // /subject/:id/section[/:x] -> drop the last segment (one level up)
+    if (parts.length >= 3) { navigate("/" + parts.slice(0, parts.length - 1).join("/")); return; }
+    // /board -> home
     if (parts[0] === "board") { navigate("/"); return; }
-    // e.g. ["subject","physics","papers"] -> subject dashboard
-    if (parts[0] === "subject" && parts.length >= 3) { navigate(`/subject/${parts[1]}`); return; }
-    // ["subject","physics"] -> subject board
-    if (parts[0] === "subject") { navigate("/board"); return; }
     navigate("/");
   };
 
