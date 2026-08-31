@@ -1,0 +1,36 @@
+import "@/App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { TeacherProvider } from "@/context/TeacherContext";
+import { Toaster } from "@/components/ui/sonner";
+import SubjectBoard from "@/pages/SubjectBoard";
+import ExamHome from "@/pages/ExamHome";
+import SubjectDashboard from "@/pages/SubjectDashboard";
+import QuestionPatterns from "@/pages/QuestionPatterns";
+import Blueprint from "@/pages/Blueprint";
+import ChapterWise from "@/pages/ChapterWise";
+import FullPaper from "@/pages/FullPaper";
+import PaperViewer from "@/pages/PaperViewer";
+
+function App() {
+  return (
+    <div className="App">
+      <TeacherProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<ExamHome />} />
+            <Route path="/board" element={<SubjectBoard />} />
+            <Route path="/subject/:subjectId" element={<SubjectDashboard />} />
+            <Route path="/subject/:subjectId/patterns" element={<QuestionPatterns />} />
+            <Route path="/subject/:subjectId/blueprint" element={<Blueprint />} />
+            <Route path="/subject/:subjectId/chapters" element={<ChapterWise />} />
+            <Route path="/subject/:subjectId/papers" element={<FullPaper />} />
+            <Route path="/subject/:subjectId/papers/:paperId" element={<PaperViewer />} />
+          </Routes>
+        </BrowserRouter>
+        <Toaster position="top-right" richColors />
+      </TeacherProvider>
+    </div>
+  );
+}
+
+export default App;
