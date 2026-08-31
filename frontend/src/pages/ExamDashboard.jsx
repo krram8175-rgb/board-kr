@@ -124,7 +124,7 @@ export default function ExamDashboard() {
         {/* Full Paper — bottom pill */}
         <button
           data-testid="exam-full-paper-pill"
-          onClick={() => (examId === "neet" ? navigate("/exam/neet/papers") : soon("Full Paper"))}
+          onClick={() => (examId === "neet" || examId === "kcet" ? navigate(`/exam/${examId}/papers`) : soon("Full Paper"))}
           className="group flex w-full items-center gap-2.5 rounded-xl bg-[#5B50E6] px-4 py-3 shadow-md transition-all hover:-translate-y-0.5 hover:shadow-lg"
         >
           <FileText className="h-4 w-4 text-indigo-100" />
