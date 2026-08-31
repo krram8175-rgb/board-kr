@@ -107,8 +107,8 @@ const PHYSICS_CHAPTERS = {
     { q: 31, label: "Moving Charges & Magnetism" },
     { q: 32, label: "Magnetism & Matter" },
     { q: 33, label: "Electromagnetic Induction" },
-    { q: 34, label: "Dual Nature of Radiation & Matter" },
-    { q: 35, label: "Ray Optics" },
+    { q: 34, label: "Ray Optics and Optical Instruments" },
+    { q: 35, label: "Dual Nature of Radiation" },
     { q: 36, label: "Nuclei" },
   ],
   "5m": [
