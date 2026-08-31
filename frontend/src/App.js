@@ -13,6 +13,7 @@ import FullPaper from "@/pages/FullPaper";
 import PaperViewer from "@/pages/PaperViewer";
 import ExamDashboard from "@/pages/ExamDashboard";
 import ExamChapters from "@/pages/ExamChapters";
+import NeetPapers from "@/pages/NeetPapers";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route path="/" element={<ExamHome />} />
             <Route path="/board" element={<SubjectBoard />} />
             <Route path="/exam/:examId" element={<ExamDashboard />} />
+            <Route path="/exam/neet/papers" element={<NeetPapers />} />
             <Route path="/exam/:examId/:subjectId/chapters" element={<ExamChapters />} />
             <Route path="/exam/:examId/:subjectId/chapters/:cls" element={<ExamChapters />} />
             <Route path="/subject/:subjectId" element={<SubjectDashboard />} />
