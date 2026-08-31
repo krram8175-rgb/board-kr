@@ -90,8 +90,8 @@ export default function FullPaper() {
                   {p.label}
                 </span>
                 {!p.available && (
-                  <span className="ml-auto flex shrink-0 items-center gap-1 rounded-md bg-slate-200 px-2 py-1 text-[11px] font-semibold text-slate-500">
-                    <Lock className="h-3 w-3" /> Soon
+                  <span className="ml-auto flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-rose-50 text-rose-500 ring-1 ring-rose-100">
+                    <Lock className="h-4 w-4" />
                   </span>
                 )}
               </button>
