@@ -57,7 +57,7 @@ export const BLUEPRINTS = {
       row("IV", 4, "The d & f Block Elements", 12, 10, { A: 2, B: 1, C: 2, D: "" }),
       row("V", 5, "Coordination Compounds", 12, 11, { A: 2, B: "", C: 3, D: "" }),
       row("VI", 6, "Haloalkanes & Haloarenes", 10, 9, { A: 2, B: 1, C: "", D: 1 }),
-      row("VII", 7, "Alcohols, Phenols & Ethers", 12, 10, { A: 3, B: "", C: 1, D: 1 }),
+      row("VII", 7, "Alcohols, Phenols & Ethers", 12, 10, { A: 3, B: 1, C: "", D: 1 }),
       row("VIII", 8, "Aldehydes, Ketones & Carboxylic Acids", 14, 12, { A: 2, B: "", C: "", D: 2 }),
       row("IX", 9, "Amines", 8, 7, { A: 2, B: "", C: "", D: 1 }),
       row("X", 10, "Biomolecules", 10, 9, { A: 2, B: 1, C: "", D: 1 }),
