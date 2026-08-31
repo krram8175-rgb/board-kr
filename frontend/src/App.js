@@ -8,6 +8,7 @@ import SubjectDashboard from "@/pages/SubjectDashboard";
 import QuestionPatterns from "@/pages/QuestionPatterns";
 import Blueprint from "@/pages/Blueprint";
 import ChapterWise from "@/pages/ChapterWise";
+import ChapterDetail from "@/pages/ChapterDetail";
 import FullPaper from "@/pages/FullPaper";
 import PaperViewer from "@/pages/PaperViewer";
 
@@ -23,6 +24,7 @@ function App() {
             <Route path="/subject/:subjectId/patterns" element={<QuestionPatterns />} />
             <Route path="/subject/:subjectId/blueprint" element={<Blueprint />} />
             <Route path="/subject/:subjectId/chapters" element={<ChapterWise />} />
+            <Route path="/subject/:subjectId/chapters/:ch" element={<ChapterDetail />} />
             <Route path="/subject/:subjectId/papers" element={<FullPaper />} />
             <Route path="/subject/:subjectId/papers/:paperId" element={<PaperViewer />} />
           </Routes>

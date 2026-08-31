@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { getSubject } from "@/lib/api";
 import { Header } from "@/components/Header";
@@ -18,6 +18,7 @@ const FREE_CHAPTERS = {
 
 export default function ChapterWise() {
   const { subjectId } = useParams();
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const { data: subject } = useQuery({
@@ -42,13 +43,16 @@ export default function ChapterWise() {
             {chapters.map((c, i) => {
               const isFree = (FREE_CHAPTERS[subjectId] || []).includes(c.ch);
               return (
-                <div
+                <button
                   key={c.ch}
+                  type="button"
                   data-testid={`chapterwise-item-${c.ch}`}
                   data-locked={isFree ? "false" : "true"}
+                  disabled={!isFree}
+                  onClick={() => isFree && navigate(`/subject/${subjectId}/chapters/${c.ch}`)}
                   style={{ animationDelay: `${i * 40}ms` }}
-                  className={`animate-fade-up flex items-center gap-3 rounded-xl border px-4 py-3 shadow-sm ${
-                    isFree ? "border-slate-200 bg-white" : "border-slate-200 bg-slate-50"
+                  className={`animate-fade-up flex w-full items-center gap-3 rounded-xl border px-4 py-3 text-left shadow-sm transition-all ${
+                    isFree ? "cursor-pointer border-slate-200 bg-white hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md" : "cursor-not-allowed border-slate-200 bg-slate-50"
                   }`}
                 >
                   <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-sm font-extrabold text-white ${isFree ? accent.icon : "bg-slate-300"}`}>
@@ -62,7 +66,7 @@ export default function ChapterWise() {
                       <Lock className="h-4 w-4" />
                     </span>
                   )}
-                </div>
+                </button>
               );
             })}
           </div>
