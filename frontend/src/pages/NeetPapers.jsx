@@ -51,8 +51,50 @@ const PAPERS = [
     { name: "AIPMT 2014", date: "4th May 2014 at 10:00 AM" },
   ] },
   { year: 2013, items: [
-    { name: "NEET 2013 (Karnataka)", date: "18th May 2013 at 10:00 AM" },
-    { name: "NEET 2013", date: "5th May 2013 at 10:00 AM" },
+    { name: "NEET 2013 (Karnataka)", date: "18th May 2013 at 3:30 PM" },
+    { name: "NEET 2013", date: "5th May 2013 at 3:30 PM" },
+  ] },
+  { year: 2012, items: [
+    { name: "AIPMT 2012 Mains", date: "13th April 2012 at 3:30 PM" },
+    { name: "AIPMT 2012 Prelims", date: "1st April 2012 at 3:30 PM" },
+  ] },
+  { year: 2011, items: [
+    { name: "AIPMT 2011 Mains", date: "15th May 2011 at 3:30 PM" },
+    { name: "AIPMT 2011 Prelims", date: "3rd April 2011 at 3:30 PM" },
+  ] },
+  { year: 2010, items: [
+    { name: "AIPMT 2010 Mains", date: "16th May 2010 at 3:30 PM" },
+    { name: "AIPMT 2010 Prelims", date: "3rd April 2010 at 3:30 PM" },
+  ] },
+  { year: 2009, items: [
+    { name: "AIPMT 2009", date: "10th May 2009 at 3:30 PM" },
+  ] },
+  { year: 2008, items: [
+    { name: "AIPMT 2008", date: "11th May 2008 at 3:30 PM" },
+  ] },
+  { year: 2007, items: [
+    { name: "AIPMT 2007", date: "6th May 2007 at 3:30 PM" },
+  ] },
+  { year: 2006, items: [
+    { name: "AIPMT 2006", date: "7th May 2006 at 3:30 PM" },
+  ] },
+  { year: 2005, items: [
+    { name: "AIPMT 2005", date: "1st May 2005 at 3:30 PM" },
+  ] },
+  { year: 2004, items: [
+    { name: "AIPMT 2004", date: "2nd May 2004 at 3:30 PM" },
+  ] },
+  { year: 2003, items: [
+    { name: "AIPMT 2003", date: "4th May 2003 at 3:30 PM" },
+  ] },
+  { year: 2002, items: [
+    { name: "AIPMT 2002", date: "5th May 2002 at 3:30 PM" },
+  ] },
+  { year: 2001, items: [
+    { name: "AIPMT 2001", date: "6th May 2001 at 3:30 PM" },
+  ] },
+  { year: 2000, items: [
+    { name: "AIPMT 2000", date: "7th May 2000 at 3:30 PM" },
   ] },
 ];
 
@@ -64,7 +106,7 @@ export default function NeetPapers() {
 
   return (
     <div className="min-h-screen bg-[#F8FAFC]">
-      <Header showBack title="NEET" Icon={Stethoscope} bgClass="bg-rose-600" />
+      <Header showBack title="NEET" Icon={Stethoscope} bgClass="bg-[#5B50E6]" />
 
       <main className="mx-auto max-w-2xl px-4 py-6 md:px-6">
         <h1 className="mb-4 text-lg font-extrabold tracking-tight text-slate-900">Previous Year Question Papers</h1>
@@ -75,7 +117,7 @@ export default function NeetPapers() {
             data-testid="year-chip-all"
             onClick={() => setActiveYear("all")}
             className={`shrink-0 rounded-full px-4 py-1.5 text-sm font-bold transition-all ${
-              activeYear === "all" ? "bg-rose-600 text-white" : "border border-slate-200 bg-white text-slate-600"
+              activeYear === "all" ? "bg-[#5B50E6] text-white" : "border border-slate-200 bg-white text-slate-600"
             }`}
           >
             All Years
@@ -86,7 +128,7 @@ export default function NeetPapers() {
               data-testid={`year-chip-${g.year}`}
               onClick={() => setActiveYear(g.year)}
               className={`shrink-0 rounded-full px-4 py-1.5 text-sm font-bold transition-all ${
-                activeYear === g.year ? "bg-rose-600 text-white" : "border border-slate-200 bg-white text-slate-600"
+                activeYear === g.year ? "bg-[#5B50E6] text-white" : "border border-slate-200 bg-white text-slate-600"
               }`}
             >
               {g.year}
@@ -107,7 +149,7 @@ export default function NeetPapers() {
                     className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm"
                   >
                     <div className="flex items-start gap-3">
-                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-rose-50 text-rose-600">
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-indigo-50 text-[#5B50E6]">
                         <FileText className="h-4 w-4" />
                       </span>
                       <div className="min-w-0 flex-1">
@@ -122,13 +164,13 @@ export default function NeetPapers() {
                     <div className="mt-3 flex gap-2">
                       <button
                         onClick={soon}
-                        className="flex-1 rounded-lg bg-rose-600 py-2 text-sm font-bold text-white transition-all hover:bg-rose-700"
+                        className="flex-1 rounded-lg bg-[#5B50E6] py-2 text-sm font-bold text-white transition-all hover:bg-[#4a41c9]"
                       >
                         Take Test
                       </button>
                       <button
                         onClick={soon}
-                        className="flex-1 rounded-lg border border-rose-200 bg-rose-50 py-2 text-sm font-bold text-rose-600 transition-all hover:bg-rose-100"
+                        className="flex-1 rounded-lg border border-indigo-200 bg-indigo-50 py-2 text-sm font-bold text-[#5B50E6] transition-all hover:bg-indigo-100"
                       >
                         Practice
                       </button>
