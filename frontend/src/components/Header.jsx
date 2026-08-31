@@ -52,7 +52,7 @@ export const Header = ({ showBack = false, title, Icon, bgClass = "bg-blue-600" 
           </div>
           <div className="text-left">
             <p className="text-[15px] font-bold leading-tight tracking-tight text-slate-900">
-              Karnataka Board
+              Exams Made Easy
             </p>
             <p className="text-xs font-medium text-slate-500">Exam Pattern & Analytics</p>
           </div>

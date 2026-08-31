@@ -13,10 +13,10 @@ const EXAMS = {
     accent: "bg-emerald-600",
     Icon: FlaskConical,
     subjects: [
-      { id: "physics", label: "Physics", icon: Atom, dot: "bg-blue-600" },
-      { id: "chemistry", label: "Chemistry", icon: FlaskConical, dot: "bg-emerald-600" },
-      { id: "math", label: "Mathematics", icon: Sigma, dot: "bg-violet-600" },
-      { id: "biology", label: "Biology", icon: Dna, dot: "bg-rose-600" },
+      { id: "physics", label: "Physics", icon: Atom, dot: "bg-indigo-900" },
+      { id: "chemistry", label: "Chemistry", icon: FlaskConical, dot: "bg-indigo-900" },
+      { id: "math", label: "Mathematics", icon: Sigma, dot: "bg-indigo-900" },
+      { id: "biology", label: "Biology", icon: Dna, dot: "bg-indigo-900" },
     ],
   },
   neet: {
@@ -24,9 +24,9 @@ const EXAMS = {
     accent: "bg-rose-600",
     Icon: Stethoscope,
     subjects: [
-      { id: "physics", label: "Physics", icon: Atom, dot: "bg-blue-600" },
-      { id: "chemistry", label: "Chemistry", icon: FlaskConical, dot: "bg-emerald-600" },
-      { id: "biology", label: "Biology", icon: Dna, dot: "bg-rose-600" },
+      { id: "physics", label: "Physics", icon: Atom, dot: "bg-indigo-900" },
+      { id: "chemistry", label: "Chemistry", icon: FlaskConical, dot: "bg-indigo-900" },
+      { id: "biology", label: "Biology", icon: Dna, dot: "bg-indigo-900" },
     ],
   },
   "jee-main": {
