@@ -11,6 +11,7 @@ import ChapterWise from "@/pages/ChapterWise";
 import ChapterDetail from "@/pages/ChapterDetail";
 import FullPaper from "@/pages/FullPaper";
 import PaperViewer from "@/pages/PaperViewer";
+import ExamDashboard from "@/pages/ExamDashboard";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Routes>
             <Route path="/" element={<ExamHome />} />
             <Route path="/board" element={<SubjectBoard />} />
+            <Route path="/exam/:examId" element={<ExamDashboard />} />
             <Route path="/subject/:subjectId" element={<SubjectDashboard />} />
             <Route path="/subject/:subjectId/patterns" element={<QuestionPatterns />} />
             <Route path="/subject/:subjectId/blueprint" element={<Blueprint />} />
