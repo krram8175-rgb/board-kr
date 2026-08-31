@@ -9,10 +9,17 @@ import { ACCENTS } from "@/lib/theme";
 import { BLUEPRINTS, MARK_TO_PART } from "@/lib/blueprints";
 import { FileText, BarChart3, ChevronRight, FileQuestion, Lock } from "lucide-react";
 
-// Trial subjects: only MCQ & FBK are accessible (first group free); every other
-// pattern is fully locked. Maths Part VI (6+4M) locks both chapter options.
+// Trial subjects use freemium locking on the pattern pages.
 const TRIAL_SUBJECTS = ["physics", "chemistry", "math"];
-const MATH_6P4_FREE = [];
+// MCQ & FBK -> only the first group is free (rest locked). Other patterns keep the
+// per-pattern free counts below.
+const FREE_COUNT = {
+  physics: { "2m": 3, "3m": 3, "5m": 2 },
+  chemistry: { "2m": 2, "3m-inorg": 2, "3m-phys": 2, "5m-org": 2, "numeric": 2 },
+  math: { "2m": 3, "3m": 3, "5m": 3 },
+};
+// Maths Part VI (6+4M) — only these two chapter options are unlocked; the OR alternatives lock.
+const MATH_6P4_FREE = ["Linear Programming", "Determinants"];
 
 // Map chapter name -> chapter number (Karnataka II PUC Physics)
 const CHAPTER_NO = {
@@ -248,11 +255,11 @@ export default function QuestionPatterns() {
     || (subjectId === "chemistry" && CHEMISTRY_CHAPTERS[activePattern])
     || (isMath6p4 && MATH_CHAPTERS["6p4m"])
     || null;
-  const freeCount = (explicitList && !isMath6p4) ? 0 : undefined;
+  const freeCount = (explicitList && !isMath6p4) ? FREE_COUNT[subjectId]?.[activePattern] : undefined;
   const trialSubject = TRIAL_SUBJECTS.includes(subjectId);
-  // In the generic groups block (MCQ/FBK ranges, Maths 2M/3M/5M), lock everything
-  // except the first group of MCQ & FBK.
-  const genericFree = isMcqFbk ? 1 : 0;
+  // Generic groups block: MCQ/FBK free only the first group; Maths 2M/3M/5M use the
+  // per-pattern free count; everything else beyond the count is locked.
+  const groupFreeCount = isMcqFbk ? 1 : FREE_COUNT[subjectId]?.[activePattern];
   const countFrac = activeMeta?.count && /\bof\b/i.test(activeMeta.count)
     ? activeMeta.count.replace(/\s*of\s*/i, "/")
     : null;
@@ -357,7 +364,7 @@ export default function QuestionPatterns() {
               {groups.map((g, gi) => {
                 const active = selectedKey === g.key;
                 const count = g.count != null ? g.count : questions.filter(g.match).length;
-                const gLocked = trialSubject && gi >= genericFree;
+                const gLocked = trialSubject && groupFreeCount != null && gi >= groupFreeCount;
                 if (gLocked) {
                   return (
                     <div
