@@ -12,6 +12,7 @@ import ChapterDetail from "@/pages/ChapterDetail";
 import FullPaper from "@/pages/FullPaper";
 import PaperViewer from "@/pages/PaperViewer";
 import ExamDashboard from "@/pages/ExamDashboard";
+import ExamChapters from "@/pages/ExamChapters";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route path="/" element={<ExamHome />} />
             <Route path="/board" element={<SubjectBoard />} />
             <Route path="/exam/:examId" element={<ExamDashboard />} />
+            <Route path="/exam/:examId/:subjectId/chapters" element={<ExamChapters />} />
             <Route path="/subject/:subjectId" element={<SubjectDashboard />} />
             <Route path="/subject/:subjectId/patterns" element={<QuestionPatterns />} />
             <Route path="/subject/:subjectId/blueprint" element={<Blueprint />} />

@@ -9,6 +9,11 @@ export const Header = ({ showBack = false, title, Icon, bgClass = "bg-blue-600" 
   // Route-based back: go up exactly one level (never re-open a viewed PDF).
   const goBack = () => {
     const parts = (location.pathname || "").split("/").filter(Boolean);
+    // /exam/:id[/:subject/chapters] -> back to exam dashboard, or home
+    if (parts[0] === "exam") {
+      if (parts.length >= 3) { navigate(`/exam/${parts[1]}`); return; }
+      navigate("/"); return;
+    }
     // /subject/:id  -> subject board
     if (parts[0] === "subject" && parts.length === 2) { navigate("/board"); return; }
     // /subject/:id/section[/:x] -> drop the last segment (one level up)

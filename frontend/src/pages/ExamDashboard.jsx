@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { toast } from "sonner";
 import {
@@ -53,6 +53,7 @@ const EXAMS = {
 
 export default function ExamDashboard() {
   const { examId } = useParams();
+  const navigate = useNavigate();
   const exam = EXAMS[examId];
   const soon = (what) =>
     toast(`${what} — Coming soon`, { description: "Content will be added shortly." });
@@ -105,7 +106,7 @@ export default function ExamDashboard() {
                   <button
                     key={s.id}
                     data-testid={`exam-subject-${s.id}`}
-                    onClick={() => soon(s.label)}
+                    onClick={() => navigate(`/exam/${examId}/${s.id}/chapters`)}
                     className="group flex w-full items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md"
                   >
                     <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-white ${s.dot}`}>
